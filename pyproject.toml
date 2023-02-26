@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "lnpayroll"
+version = "0.1.0"
+description = "Bitcoin Lightning Payroll Processing"
+authors = ["Titusz <tp@py7.de>"]
+license = "Apache-2.0"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.1.7"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+black = "*"
+poethepoet = "*"
+pytest-django = "^4.5.2"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "lnpayroll.settings"
+
+[tool.poe.tasks]
+format = { cmd = "poetry run black .", help = "Code style formating with black" }
+lf = { cmd = "poetry run python -m dev.lf", help = "Convert line endings to lf"}
+test = { cmd = "poetry run pytest", help = "Run tests" }
+all = ["format", "lf", "test"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
