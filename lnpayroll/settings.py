@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "djmoney",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -77,7 +78,7 @@ WSGI_APPLICATION = "lnpayroll.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "dev/db.sqlite3",
+        "NAME": BASE_DIR / "dev/dev.db",
     }
 }
 
@@ -122,3 +123,12 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# django-money
+import moneyed
+
+XBT = moneyed.add_currency(
+    code="XBT", numeric="666", name="Bitcoin", countries=["El Salvador"]
+)
+
+CURRENCIES = ("EUR", "USD", "XBT")

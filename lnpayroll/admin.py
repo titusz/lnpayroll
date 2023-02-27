@@ -4,7 +4,8 @@ from lnpayroll import models
 
 @admin.register(models.Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    pass
+    list_display = ["code", "first_name", "last_name", "payout_amount", "active"]
+    list_editable = ["payout_amount", "active"]
 
 
 @admin.register(models.Payroll)
