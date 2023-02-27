@@ -1,6 +1,8 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from djmoney.models.fields import MoneyField
 from django.utils.translation import gettext_lazy as _
+from .validators import validate_lnurl, validate_ln_address
 
 
 class Employee(models.Model):
@@ -14,8 +16,17 @@ class Employee(models.Model):
     first_name = models.CharField(verbose_name=_("First Name"), max_length=150)
     last_name = models.CharField(verbose_name=_("Last Name"), max_length=150)
     email = models.EmailField(verbose_name=_("Email Address"), blank=True)
-    ln_address = models.EmailField(verbose_name=_("Lightning Address"), blank=True)
-    lnurlp = models.CharField(verbose_name=_("LNURLp"), max_length=200, blank=True)
+    ln_address = models.EmailField(
+        verbose_name=_("Lightning Address"),
+        blank=True,
+        validators=[validate_ln_address],
+    )
+    lnurlp = models.CharField(
+        verbose_name=_("LNURLp"),
+        max_length=200,
+        blank=True,
+        validators=[validate_lnurl],
+    )
     payout_amount = MoneyField(
         verbose_name=_("Payout Amount"),
         max_digits=20,
@@ -26,6 +37,12 @@ class Employee(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.code})"
+
+    def clean(self):
+        if not self.lnurlp and not self.ln_address:
+            raise ValidationError(
+                _("Either an LNURLp or a Lightning Address is required")
+            )
 
 
 class Payroll(models.Model):
