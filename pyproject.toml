@@ -9,6 +9,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 django = "^4.1.7"
+django-money = "^3.0.0"
+loguru = "^0.6.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
@@ -24,6 +26,7 @@ format = { cmd = "poetry run black .", help = "Code style formating with black" 
 lf = { cmd = "poetry run python -m dev.lf", help = "Convert line endings to lf"}
 test = { cmd = "poetry run pytest", help = "Run tests" }
 all = ["format", "lf", "test"]
+config = { cmd = "poetry run python -m dev.config", help = "Reset development environment"}
 
 [build-system]
 requires = ["poetry-core"]
