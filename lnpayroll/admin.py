@@ -13,9 +13,15 @@ class EmployeeAdmin(admin.ModelAdmin):
 
 @admin.register(models.Payroll)
 class PayrollAdmin(admin.ModelAdmin):
-    pass
+    actions = None
+    list_display = ["show_month", "status"]
+
+    def show_month(self, obj):
+        return f"{obj.month.year}-{obj.month.month:0>2}"
 
 
 @admin.register(models.Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    pass
+    actions = None
+    list_display = ["pk", "payroll", "employee", "fiat_amount", "status"]
+    list_filter = ["status"]
