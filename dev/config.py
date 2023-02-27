@@ -90,7 +90,7 @@ def config():
     delete_dev_db()
     reset_migrations()
     migrate()
-    # load_fixtures()
+    load_fixtures()
     create_user()
 
 
