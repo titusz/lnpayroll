@@ -5,6 +5,11 @@ from lnurl import LnurlPayResponse
 from django.utils.translation import gettext_lazy as _
 import lnpayroll as lnp
 
+__all__ = [
+    "validate_lnurl",
+    "validate_ln_address",
+]
+
 
 def validate_ln_address(value):
     lnurlp = lnp.ln_address_url(value)
