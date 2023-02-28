@@ -1,4 +1,3 @@
-import lnurl
 from django.core.exceptions import ValidationError
 from django.db import models
 from djmoney.models.fields import MoneyField
@@ -32,8 +31,8 @@ class Employee(models.Model):
     )
     payout_amount = MoneyField(
         verbose_name=_("Payout Amount"),
-        max_digits=20,
-        decimal_places=12,
+        max_digits=8,
+        decimal_places=2,
         default_currency="EUR",
     )
     active = models.BooleanField(verbose_name=_("Active"), default=True)
@@ -49,10 +48,8 @@ class Employee(models.Model):
 
     @property
     def lnurl_raw(self):
-        if self.lnurlp:
-            return lnurl.decode(self.lnurlp)
-        else:
-            return lnp.ln_address_url(self.ln_address)
+        address = self.lnurlp or self.ln_address
+        return lnp.decode_payment_address(address)
 
 
 class Payroll(models.Model):
@@ -72,12 +69,10 @@ class Payroll(models.Model):
         super(Payroll, self).save(*args, **kwargs)
 
         for employee in Employee.objects.filter(active=True):
-            fx_rate = lnp.get_fx_rate(employee.payout_amount_currency, "BTC")
             Payment.objects.create(
                 payroll=self,
                 employee=employee,
                 fiat_amount=employee.payout_amount,
-                fx_rate=fx_rate,
                 lnurl_raw=employee.lnurl_raw,
             )
 
@@ -97,7 +92,7 @@ class Payment(models.Model):
     )
     fiat_amount = MoneyField(max_digits=20, decimal_places=12, default_currency="EUR")
     fx_rate = models.DecimalField(
-        verbose_name=_("Exchange Rate"), max_digits=12, decimal_places=12
+        verbose_name=_("Exchange Rate"), max_digits=12, decimal_places=12, null=True
     )
     lnurl_raw = models.CharField(max_length=200)
     msats_payed = models.PositiveBigIntegerField(null=True)
