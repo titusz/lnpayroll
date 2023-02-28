@@ -1,4 +1,8 @@
-__all__ = ["ExchangeApiError"]
+__all__ = [
+    "ExchangeApiError",
+    "InvalidPaymentAddress",
+    "PaymentError",
+]
 
 
 class LnPayrollExeption(Exception):
@@ -6,4 +10,12 @@ class LnPayrollExeption(Exception):
 
 
 class ExchangeApiError(LnPayrollExeption):
+    pass
+
+
+class InvalidPaymentAddress(LnPayrollExeption):
+    pass
+
+
+class PaymentError(LnPayrollExeption):
     pass
