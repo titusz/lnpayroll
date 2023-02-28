@@ -5,6 +5,7 @@ from djmoney.models.fields import MoneyField
 from django.utils.translation import gettext_lazy as _
 from .validators import validate_lnurl, validate_ln_address
 import lnpayroll as lnp
+from datetime import date
 
 
 class Employee(models.Model):
@@ -60,7 +61,7 @@ class Payroll(models.Model):
         PARTIAL = "partial"
         PAYED = "paid"
 
-    month = models.DateField()
+    month = models.DateField(default=date.today)
     status = models.CharField(max_length=8, choices=Status.choices, default=Status.NEW)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -69,11 +70,14 @@ class Payroll(models.Model):
 
     def save(self, *args, **kwargs):
         super(Payroll, self).save(*args, **kwargs)
+
         for employee in Employee.objects.filter(active=True):
+            fx_rate = lnp.get_fx_rate(employee.payout_amount_currency, "BTC")
             Payment.objects.create(
                 payroll=self,
                 employee=employee,
                 fiat_amount=employee.payout_amount,
+                fx_rate=fx_rate,
                 lnurl_raw=employee.lnurl_raw,
             )
 
@@ -92,6 +96,9 @@ class Payment(models.Model):
         "Employee", on_delete=models.PROTECT, related_name="employee_payments"
     )
     fiat_amount = MoneyField(max_digits=20, decimal_places=12, default_currency="EUR")
+    fx_rate = models.DecimalField(
+        verbose_name=_("Exchange Rate"), max_digits=12, decimal_places=12
+    )
     lnurl_raw = models.CharField(max_length=200)
     msats_payed = models.PositiveBigIntegerField(null=True)
     msats_fees = models.PositiveBigIntegerField(null=True)

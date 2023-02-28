@@ -34,6 +34,7 @@ class PaymentAdmin(admin.ModelAdmin):
         "pk",
         "employee",
         "fiat_amount",
+        "fx_rate",
         "msats_payed",
         "msats_fees",
         "payroll",
