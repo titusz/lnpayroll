@@ -9,7 +9,9 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import moneyed
+from collections import OrderedDict
+from decimal import Decimal
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,6 +33,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "constance",
+    "constance.backends.database",
     "admin_interface",
     "colorfield",
     "djmoney",
@@ -116,6 +120,15 @@ USE_I18N = True
 USE_TZ = True
 
 
+# Cache
+CACHES = {
+    "default": {
+        "BACKEND": "shared_memory_dict.caches.django.SharedMemoryCache",
+        "LOCATION": "memory",
+        "OPTIONS": {"MEMORY_BLOCK_SIZE": 1024},
+    }
+}
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
@@ -136,10 +149,29 @@ X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 # django-money
-import moneyed
+
 
 XBT = moneyed.add_currency(
     code="XBT", numeric="666", name="Bitcoin", countries=["El Salvador"]
 )
 
 CURRENCIES = ("EUR", "USD", "XBT")
+
+# django-constance
+
+CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
+CONSTANCE_DATABASE_CACHE_BACKEND = "default"
+CONSTANCE_CONFIG = OrderedDict(
+    [
+        (
+            "MAX_FEE",
+            (
+                Decimal("0.1"),
+                "Maximum transaction fee as percentage of payment amount",
+                Decimal,
+            ),
+        ),
+        ("FX_TIMEOUT", (60, "Number of seconds for exchange rate timout", int)),
+        ("TX_TIMEOUT", (10, "Number of seconds for transaction timout", int)),
+    ]
+)

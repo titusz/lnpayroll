@@ -300,6 +300,25 @@ files = [
 Pillow = ">=9.0.0"
 
 [[package]]
+name = "django-constance"
+version = "2.9.1"
+description = "Django live settings with pluggable backends, including Redis."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "django-constance-2.9.1.tar.gz", hash = "sha256:4c6a96a5f2cbce1bc3fa41aa20566b6ee26fbd896c9f91f996518a3a0904f6c8"},
+    {file = "django_constance-2.9.1-py3-none-any.whl", hash = "sha256:bf0b392efa18a1f3f464eddb7eb36ac5c02598354a5e31d0d4ce4fc8b535694b"},
+]
+
+[package.dependencies]
+django-picklefield = {version = "*", optional = true, markers = "extra == \"database\""}
+
+[package.extras]
+database = ["django-picklefield"]
+redis = ["redis"]
+
+[[package]]
 name = "django-money"
 version = "3.0.0"
 description = "Adds support for using money and currency fields in django models and forms. Uses py-moneyed as the money implementation."
@@ -319,6 +338,24 @@ setuptools = "*"
 [package.extras]
 exchange = ["certifi"]
 test = ["mixer", "pytest (>=3.1.0)", "pytest-cov", "pytest-django", "pytest-pythonpath"]
+
+[[package]]
+name = "django-picklefield"
+version = "3.1"
+description = "Pickled object field for Django"
+category = "main"
+optional = false
+python-versions = ">=3"
+files = [
+    {file = "django-picklefield-3.1.tar.gz", hash = "sha256:c786cbeda78d6def2b43bff4840d19787809c8909f7ad683961703060398d356"},
+    {file = "django_picklefield-3.1-py3-none-any.whl", hash = "sha256:d77c504df7311e8ec14e8b779f10ca6fec74de6c7f8e2c136e1ef60cf955125d"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
+
+[package.extras]
+tests = ["tox"]
 
 [[package]]
 name = "exceptiongroup"
@@ -738,6 +775,23 @@ testing = ["build[virtualenv]", "filelock (>=3.4.0)", "flake8 (<5)", "flake8-202
 testing-integration = ["build[virtualenv]", "filelock (>=3.4.0)", "jaraco.envs (>=2.2)", "jaraco.path (>=3.2.0)", "pytest", "pytest-enabler", "pytest-xdist", "tomli", "virtualenv (>=13.0.0)", "wheel"]
 
 [[package]]
+name = "shared-memory-dict"
+version = "0.7.2"
+description = "A very simple shared memory dict implementation"
+category = "main"
+optional = false
+python-versions = ">=3.8,<4.0"
+files = [
+    {file = "shared-memory-dict-0.7.2.tar.gz", hash = "sha256:8294257e1a2466afb5e19a878a8c446325b8913d57d6d9578ccba905564a974d"},
+    {file = "shared_memory_dict-0.7.2-py3-none-any.whl", hash = "sha256:b1d5a40a7a40e764187ae3a95c6096a4c4a8b27625408c63950d9db2b768506b"},
+]
+
+[package.extras]
+aiocache = ["aiocache (>=0.11.1,<0.12.0)"]
+all = ["aiocache (>=0.11.1,<0.12.0)", "django (>=3.0.8,<4.0.0)"]
+django = ["django (>=3.0.8,<4.0.0)"]
+
+[[package]]
 name = "sqlparse"
 version = "0.4.3"
 description = "A non-validating SQL parser."
@@ -820,4 +874,4 @@ dev = ["black (>=19.3b0)", "pytest (>=4.6.2)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "08eafb7b7aca0db4680e7242ee120cd30acb3ef518c74964f478f2607298dd32"
+content-hash = "ad450092c4895c481c98a2f1bf73caf43bc05b58c1cf4dc4c4af539b8fdbe4f2"
