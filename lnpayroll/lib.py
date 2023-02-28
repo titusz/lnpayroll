@@ -49,4 +49,3 @@ def decode_payment_address(pa):
         raise lnp.InvalidPaymentAddress(pa)
 
     return url
-
