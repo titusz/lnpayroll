@@ -50,9 +50,9 @@
             "list_filter_sticky": true,
             "list_filter_removal_links": false,
             "foldable_apps": false,
-            "show_fieldsets_as_tabs": false,
+            "show_fieldsets_as_tabs": true,
             "show_inlines_as_tabs": false,
-            "recent_actions_visible": true,
+            "recent_actions_visible": false,
             "form_submit_sticky": false,
             "form_pagination_sticky": false
         }

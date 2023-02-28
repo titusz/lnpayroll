@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.forms import TextInput
+from django.db.models import CharField
+
 from lnpayroll import models
 
 
@@ -16,6 +19,16 @@ class EmployeeAdmin(admin.ModelAdmin):
     list_editable = ["payout_amount", "active"]
     list_filter = ["active"]
     search_fields = ["first_name", "last_name"]
+    fieldsets = (
+        ("Employee Data", {"fields": ("code", "first_name", "last_name", "email")}),
+        (
+            "Payment Settings",
+            {
+                "classes": ("wide",),
+                "fields": ("ln_address", "lnurlp", "payout_amount", "active"),
+            },
+        ),
+    )
 
 
 @admin.register(models.Payroll)
