@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "django_object_actions",
     "constance",
     "constance.backends.database",
     "admin_interface",

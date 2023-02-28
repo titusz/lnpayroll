@@ -1,8 +1,10 @@
+from django.http import HttpResponseRedirect
+from django.utils.html import format_html
+from loguru import logger as log
 from django.contrib import admin
-from django.forms import TextInput
-from django.db.models import CharField
-
+from django_object_actions import DjangoObjectActions, action
 from lnpayroll import models
+from lnpayroll import tasks
 
 
 @admin.register(models.Employee)
@@ -41,8 +43,7 @@ class PayrollAdmin(admin.ModelAdmin):
 
 
 @admin.register(models.Payment)
-class PaymentAdmin(admin.ModelAdmin):
-    actions = None
+class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
     list_display = [
         "pk",
         "employee",
@@ -52,5 +53,20 @@ class PaymentAdmin(admin.ModelAdmin):
         "msats_fees",
         "payroll",
         "status",
+        "pay_button",
     ]
     list_filter = ["status"]
+    change_actions = ["pay"]
+
+    @action(label="Pay")
+    def pay(self, request, obj):
+        log.debug(f"Triggered payment {obj}")
+        tasks.pay(obj.pk)
+        self.message_user(request, "Payed")
+        return HttpResponseRedirect("/lnpayroll/payment/")
+
+    def pay_button(self, obj):
+        link = f"/lnpayroll/payment/{obj.id}/actions/pay/"
+        return format_html(f'<a class="button" href="{link}">Pay</a>')
+
+    pay_button.short_description = "Pay"
