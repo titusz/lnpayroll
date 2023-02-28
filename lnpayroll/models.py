@@ -38,7 +38,7 @@ class Employee(models.Model):
     active = models.BooleanField(verbose_name=_("Active"), default=True)
 
     def __str__(self):
-        return f"{self.first_name} {self.last_name} ({self.code})"
+        return f"{self.first_name} {self.last_name}"
 
     def clean(self):
         if not self.lnurlp and not self.ln_address:
