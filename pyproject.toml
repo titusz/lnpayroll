@@ -16,6 +16,7 @@ django-constance = {extras = ["database"], version = "^2.9.1"}
 shared-memory-dict = "^0.7.2"
 django-object-actions = "^4.1.0"
 django-admin-interface = "^0.24.2"
+bolt11-voltage = "^0.0.1.4"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"

@@ -88,13 +88,16 @@ class Payment(models.Model):
     )
     fiat_amount = models.DecimalField(verbose_name=_("Fiat Amount"), max_digits=8, decimal_places=2)
     fx_rate = models.DecimalField(
-        verbose_name=_("Exchange Rate"), max_digits=12, decimal_places=12, null=True
+        verbose_name=_("Exchange Rate"), max_digits=12, decimal_places=8, null=True
     )
+    fx_rate_time = models.DateTimeField(_("Exchange Rate Time"), null=True)
+    fx_rate_provider = models.CharField(_("Exchange Rate Provider"), max_length=16, blank=True)
+    invoice = models.CharField(_("BOLT11 Invoice"), max_length=1024)
     lnurl_raw = models.CharField(max_length=200)
     msats_payed = models.PositiveBigIntegerField(null=True)
     msats_fees = models.PositiveBigIntegerField(null=True)
     memo = models.CharField(max_length=128, blank=True)
-    tx_ref = models.CharField(max_length=200, blank=True)
+    payment_hash = models.CharField(verbose_name=_("Payment Hash"), max_length=64, blank=True)
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.NEW)
     created = models.DateTimeField(auto_now_add=True)
     payed = models.DateTimeField(null=True)

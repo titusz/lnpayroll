@@ -4,7 +4,7 @@ from loguru import logger as log
 from django.contrib import admin
 from django_object_actions import DjangoObjectActions, action
 from lnpayroll import models
-from lnpayroll import tasks
+from lnpayroll import lightning
 
 
 @admin.register(models.Employee)
@@ -57,12 +57,14 @@ class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
     ]
     list_filter = ["status"]
     change_actions = ["pay"]
+    list_editable = ["status"]
+    readonly_fields = ("fx_rate",)
 
     @action(label="Pay")
     def pay(self, request, obj):
         log.debug(f"Triggered payment {obj}")
-        tasks.pay(obj.pk)
-        self.message_user(request, "Payed")
+        msg = lightning.pay(obj.pk)
+        self.message_user(request, msg.msg, level=msg.lvl)
         return HttpResponseRedirect("/lnpayroll/payment/")
 
     def pay_button(self, obj):

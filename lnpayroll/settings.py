@@ -116,7 +116,7 @@ TIME_ZONE = "UTC"
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Cache
@@ -162,8 +162,13 @@ CONSTANCE_ADDITIONAL_FIELDS = {
 CONSTANCE_CONFIG = OrderedDict(
     [
         ("BASE_CURRENCY", ("EUR", "Book keeping currency", "charfield")),
-        ("MAX_FEE", (Decimal("0.5"), "Maximum transaction fee (% of payment amount)", Decimal)),
-        ("FX_TIMEOUT", (60, "Number of seconds for exchange rate timout", int)),
-        ("TX_TIMEOUT", (10, "Number of seconds for transaction timout", int)),
+        ("MAX_FEE_MSATS", (100_000, "Maximum transaction fee in millisatoshis", int)),
+        ("FX_TIMEOUT", (60, "Number of seconds before updating exchange rate", int)),
+        ("TX_TIMEOUT", (30, "Number of seconds for transaction timeout", int)),
     ]
 )
+
+# LND
+LND_MACAROON_PATH = BASE_DIR / "dev/lnd.mac"
+LND_CERT_PATH = BASE_DIR / "dev/lnd.cert"
+LND_REST_SERVER = "https://umbrel.local:8080"
