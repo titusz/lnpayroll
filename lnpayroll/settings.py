@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "constance.backends.database",
     "admin_interface",
     "colorfield",
-    "django.contrib.admin",
+    "lnpayroll.app.LnPayrollAdminConfig",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
