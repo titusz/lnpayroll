@@ -1,3 +1,4 @@
+from constance import config
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -49,17 +50,12 @@ class Employee(models.Model):
 
 
 class Payroll(models.Model):
-    class Status(models.TextChoices):
-        NEW = "new"
-        PARTIAL = "partial"
-        PAYED = "paid"
-
-    month = models.DateField(default=date.today)
-    status = models.CharField(max_length=8, choices=Status.choices, default=Status.NEW)
+    title = models.CharField(verbose_name=_("Title"), max_length=256, blank=True)
+    date = models.DateField(default=date.today)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Payroll ({self.month.year}-{self.month.month:0>2})"
+        return f"{self.date.year}-{self.date.month:0>2}"
 
     def save(self, *args, **kwargs):
         super(Payroll, self).save(*args, **kwargs)

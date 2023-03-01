@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from collections import OrderedDict
 from decimal import Decimal
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
+from django.conf.locale.en import formats as en_formats
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,7 +28,8 @@ SECRET_KEY = "django-insecure-uf47t)@e40x&-0*ro-@ti3$t75nb+6s8*(uk1sjtsuh0!ksmec
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+CSRF_TRUSTED_ORIGINS = ["https://*.ngrok.io"]
 
 
 # Application definition
@@ -111,12 +114,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
-
 USE_I18N = True
-
-USE_TZ = False
+USE_TZ = True
+en_formats.DATETIME_FORMAT = "Y-m-d H:i:s"
+en_formats.DATE_FORMAT = "Y-m-d"
 
 
 # Cache
@@ -149,8 +151,6 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
 
 # django-constance
-from django.forms import TextInput
-
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_DATABASE_CACHE_BACKEND = "default"
 CONSTANCE_ADDITIONAL_FIELDS = {
