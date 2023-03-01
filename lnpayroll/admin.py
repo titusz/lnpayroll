@@ -57,7 +57,6 @@ class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
     ]
     list_filter = ["status"]
     change_actions = ["pay"]
-    list_editable = ["status"]
     readonly_fields = ("fx_rate",)
 
     @action(label="Pay")
