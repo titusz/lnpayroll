@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from decimal import Decimal
+from decimal import Decimal, getcontext
 import requests
 from django.core.cache import cache
 from loguru import logger as log
@@ -63,9 +63,10 @@ def get_fx_rate(src: str, dst: str) -> lnp.FxRate:
 
 
 def to_msats(amount, fx_rate):
-    # type: (lnp.Money, lnp.FxRate) -> int
+    # type: (Decimal, lnp.FxRate) -> int
     """Convert any monetary amount to millisatoshis"""
-    amount_btc = amount.amount * fx_rate.rate
-    amount_sats = amount_btc * 100_000_000
+    getcontext().prec = 8
+    amount_btc = amount * fx_rate.rate
+    amount_sats = int(amount_btc * 100_000_000)
     amount_msats = amount_sats * 1000
-    return int(amount_msats)
+    return amount_msats
