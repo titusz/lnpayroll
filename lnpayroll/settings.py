@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import moneyed
 from collections import OrderedDict
 from decimal import Decimal
 from pathlib import Path
@@ -38,7 +37,6 @@ INSTALLED_APPS = [
     "constance.backends.database",
     "admin_interface",
     "colorfield",
-    "djmoney",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -149,29 +147,22 @@ FIXTURE_DIRS = [BASE_DIR / "lnpayroll/fixtures"]
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
-# django-money
-
-
-XBT = moneyed.add_currency(
-    code="XBT", numeric="666", name="Bitcoin", countries=["El Salvador"]
-)
-
-CURRENCIES = ("EUR", "USD", "XBT")
 
 # django-constance
+from django.forms import TextInput
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_DATABASE_CACHE_BACKEND = "default"
+CONSTANCE_ADDITIONAL_FIELDS = {
+    "charfield": [
+        "django.forms.fields.CharField",
+        {"widget": "django.forms.TextInput", "widget_kwargs": {"attrs": {"size": "10"}}},
+    ],
+}
 CONSTANCE_CONFIG = OrderedDict(
     [
-        (
-            "MAX_FEE",
-            (
-                Decimal("0.1"),
-                "Maximum transaction fee as percentage of payment amount",
-                Decimal,
-            ),
-        ),
+        ("BASE_CURRENCY", ("EUR", "Book keeping currency", "charfield")),
+        ("MAX_FEE", (Decimal("0.5"), "Maximum transaction fee (% of payment amount)", Decimal)),
         ("FX_TIMEOUT", (60, "Number of seconds for exchange rate timout", int)),
         ("TX_TIMEOUT", (10, "Number of seconds for transaction timout", int)),
     ]

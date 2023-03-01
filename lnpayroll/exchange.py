@@ -54,9 +54,7 @@ def get_fx_rate(src: str, dst: str) -> lnp.FxRate:
         try:
             fx_rate = provider.fx_rate(src, dst)
             cache.set(key, fx_rate, timeout=config.FX_TIMEOUT)
-            log.debug(
-                f"Updated exchange rate {key} to {fx_rate.rate} via {fx_rate.provider}"
-            )
+            log.debug(f"Updated exchange rate {key} to {fx_rate.rate} via {fx_rate.provider}")
             return fx_rate
         except Exception as e:
             log.error(f"Failed to fetch exchange rate from {provider.__name__}: {e}")

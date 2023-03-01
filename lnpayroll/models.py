@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from djmoney.models.fields import MoneyField
 from django.utils.translation import gettext_lazy as _
 from .validators import validate_lnurl, validate_ln_address
 import lnpayroll as lnp
@@ -29,11 +28,10 @@ class Employee(models.Model):
         blank=True,
         validators=[validate_lnurl],
     )
-    payout_amount = MoneyField(
+    payout_amount = models.DecimalField(
         verbose_name=_("Payout Amount"),
         max_digits=8,
         decimal_places=2,
-        default_currency="EUR",
     )
     active = models.BooleanField(verbose_name=_("Active"), default=True)
 
@@ -42,9 +40,7 @@ class Employee(models.Model):
 
     def clean(self):
         if not self.lnurlp and not self.ln_address:
-            raise ValidationError(
-                _("Either an LNURLp or a Lightning Address is required")
-            )
+            raise ValidationError(_("Either an LNURLp or a Lightning Address is required"))
 
     @property
     def lnurl_raw(self):
@@ -90,7 +86,7 @@ class Payment(models.Model):
     employee = models.ForeignKey(
         "Employee", on_delete=models.PROTECT, related_name="employee_payments"
     )
-    fiat_amount = MoneyField(max_digits=20, decimal_places=12, default_currency="EUR")
+    fiat_amount = models.DecimalField(verbose_name=_("Fiat Amount"), max_digits=8, decimal_places=2)
     fx_rate = models.DecimalField(
         verbose_name=_("Exchange Rate"), max_digits=12, decimal_places=12, null=True
     )

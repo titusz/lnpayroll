@@ -30,9 +30,7 @@ def delete_dev_db():
             os.remove(dev_db)
             log.info(f"Deleted dev database at {dev_db}?")
         except Exception as e:
-            log.error(
-                f"{e}\nFailed deleting dev database\nRetry after stopping dev server!"
-            )
+            log.error(f"{e}\nFailed deleting dev database\nRetry after stopping dev server!")
             sys.exit(0)
 
 

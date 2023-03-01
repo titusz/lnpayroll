@@ -9,22 +9,16 @@ def test_decode_payment_address_empty():
 
 
 def test_decode_payment_address_raw():
-    assert (
-        lnp.decode_payment_address("https://example.com/ln") == "https://example.com/ln"
-    )
+    assert lnp.decode_payment_address("https://example.com/ln") == "https://example.com/ln"
 
 
 def test_decode_payment_address_lnurlp():
-    assert (
-        lnp.decode_payment_address("lnurlp://example.com/ln")
-        == "https://example.com/ln"
-    )
+    assert lnp.decode_payment_address("lnurlp://example.com/ln") == "https://example.com/ln"
 
 
 def test_decode_payment_address_lnaddress():
     assert (
-        lnp.decode_payment_address("ln@example.com")
-        == "https://example.com/.well-known/lnurlp/ln"
+        lnp.decode_payment_address("ln@example.com") == "https://example.com/.well-known/lnurlp/ln"
     )
 
 
