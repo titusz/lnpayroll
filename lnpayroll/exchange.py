@@ -9,6 +9,7 @@ import lnpayroll as lnp
 __all__ = [
     "get_fx_rate",
     "to_msats",
+    "max_fee",
 ]
 
 
@@ -70,3 +71,13 @@ def to_msats(amount, fx_rate):
     amount_sats = int(amount_btc * 100_000_000)
     amount_msats = amount_sats * 1000
     return amount_msats
+
+
+def max_fee(amount_msats):
+    # type: (int) -> int
+    """Calculate maximum transaction fee in millisatoshis based on configuration."""
+    base_fee_msats = config.PASS_TROUGH_FEE_SATS * 1000
+    max_fee_calculated = round(config.MAX_FEE_PPM * amount_msats / 1000000)
+    if max_fee_calculated < base_fee_msats:
+        return base_fee_msats
+    return max_fee_calculated

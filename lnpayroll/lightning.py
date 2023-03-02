@@ -105,9 +105,10 @@ def pay(pk):
     # Pay Invoice´
     endpoint = f"{settings.LND_REST_SERVER}/v2/router/send"
 
+    max_fee = lnp.max_fee(msats)
     payload = {
         "payment_request": invoice,
-        "fee_limit_msat": f"{config.MAX_FEE_MSATS}",
+        "fee_limit_msat": f"{max_fee}",
         "timeout_seconds": config.TX_TIMEOUT,
     }
 

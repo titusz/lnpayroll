@@ -162,7 +162,8 @@ CONSTANCE_ADDITIONAL_FIELDS = {
 CONSTANCE_CONFIG = OrderedDict(
     [
         ("BASE_CURRENCY", ("EUR", "Book keeping currency", "charfield")),
-        ("MAX_FEE_MSATS", (100_000, "Maximum transaction fee in millisatoshis", int)),
+        ("PASS_TROUGH_FEE_SATS", (1, "Fee that is always accepted irrespective of PPM")),
+        ("MAX_FEE_PPM", (500, "Maximum transaction fee in PPM", int)),
         ("FX_TIMEOUT", (60, "Number of seconds before updating exchange rate", int)),
         ("TX_TIMEOUT", (30, "Number of seconds for transaction timeout", int)),
     ]
