@@ -35,6 +35,7 @@ CSRF_TRUSTED_ORIGINS = ["https://*.ngrok.io"]
 # Application definition
 
 INSTALLED_APPS = [
+    "import_export",
     "django_object_actions",
     "constance",
     "constance.backends.database",

@@ -1,12 +1,15 @@
 from django.db.models import Sum, Count, Q
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
+from import_export import resources
 from loguru import logger as log
 from django.contrib import admin
 from django_object_actions import DjangoObjectActions, action
 from lnpayroll import models
 from lnpayroll import lightning
 from constance import config
+from import_export.admin import ExportMixin
+from import_export.fields import Field
 
 
 @admin.register(models.Employee)
@@ -129,8 +132,33 @@ class PayrollAdmin(admin.ModelAdmin):
         return super().has_delete_permission(request, obj)
 
 
+class PaymentResource(resources.ModelResource):
+    fiat_currency = Field(attribute="fiat_currency", column_name="fiat_currency")
+    btc_amount = Field(attribute="btc_payed", column_name="btc_payed")
+    fee_sats = Field(attribute="fee_sats", column_name="fee_sats")
+
+    class Meta:
+        model = models.Payment
+        fields = (
+            "id",
+            "payroll__date",
+            "payroll__title",
+            "employee__code",
+            "fiat_currency",
+            "fiat_amount",
+            "fx_rate",
+            "btc_amount",
+            "fee_sats",
+            "status",
+            "payed",
+            "payment_hash",
+        )
+        export_order = fields
+
+
 @admin.register(models.Payment)
-class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
+class PaymentAdmin(DjangoObjectActions, ExportMixin, admin.ModelAdmin):
+    resource_classes = [PaymentResource]
     fields = (
         "payroll",
         "employee",

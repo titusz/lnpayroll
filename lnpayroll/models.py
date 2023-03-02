@@ -6,6 +6,7 @@ from .validators import validate_lnurl, validate_ln_address
 import lnpayroll as lnp
 from datetime import date
 from decimal import Decimal
+from constance import config
 
 
 class Employee(models.Model):
@@ -106,15 +107,20 @@ class Payment(models.Model):
     def __str__(self):
         return f"Payment ({self.fiat_amount} -> {self.employee})"
 
+    def fiat_currency(self):
+        return config.BASE_CURRENCY
+
     @display(description="₿ Payed", ordering="msats_payed")
     def btc_payed(self):
         if self.msats_payed:
-            return self.msats_payed * 0.00000000001
+            value = Decimal(self.msats_payed * 0.00000000001).quantize(Decimal(".00000001"))
+            return f"{value:.8f}"
 
     @display(description="Fee (SAT)", ordering="msats_fees")
     def fee_sats(self):
         if self.msats_fees:
             return self.msats_fees / 1000
+        return 0
 
     @display(description="Fee (PPM)", ordering="msats_fees")
     def fee_ppm(self):
