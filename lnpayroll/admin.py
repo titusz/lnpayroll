@@ -121,6 +121,38 @@ class PayrollAdmin(admin.ModelAdmin):
 
 @admin.register(models.Payment)
 class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
+    def has_delete_permission(self, request, obj=None):
+        if obj and obj.status in (models.Payment.Status.PAID, models.Payment.Status.PROCESSING):
+            return False
+        else:
+            return super().has_delete_permission(request, obj)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    fields = (
+        "payroll",
+        "employee",
+        "fiat_amount",
+        "fx_rate",
+        "fx_rate_time",
+        "fx_rate_provider",
+        "invoice",
+        "lnurl_raw",
+        "msats_payed",
+        "msats_fees",
+        "memo",
+        "payment_hash",
+        "status",
+        "created",
+        "payed",
+    )
+
+    readonly_fields = fields
+
     list_display = [
         "status_label",
         "get_payroll_date",
@@ -135,7 +167,7 @@ class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
     ]
     list_filter = ["status", "payroll__title"]
     change_actions = ["pay"]
-    readonly_fields = ("fx_rate",)
+
     date_hierarchy = "payroll__date"
 
     colors = {
