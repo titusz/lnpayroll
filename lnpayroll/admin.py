@@ -118,21 +118,19 @@ class PayrollAdmin(admin.ModelAdmin):
     status_label.allow_tags = True
     status_label.short_description = "status"
 
+    def has_delete_permission(self, request, obj=None):
+        if (
+            obj
+            and obj.payroll_payments.filter(
+                status__in=(models.Payment.Status.PAID, models.Payment.Status.PROCESSING)
+            ).exists()
+        ):
+            return False
+        return super().has_delete_permission(request, obj)
+
 
 @admin.register(models.Payment)
 class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
-    def has_delete_permission(self, request, obj=None):
-        if obj and obj.status in (models.Payment.Status.PAID, models.Payment.Status.PROCESSING):
-            return False
-        else:
-            return super().has_delete_permission(request, obj)
-
-    def has_add_permission(self, request):
-        return False
-
-    def has_change_permission(self, request, obj=None):
-        return False
-
     fields = (
         "payroll",
         "employee",
@@ -207,3 +205,15 @@ class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
         return ""
 
     pay_button.short_description = "Pay"
+
+    def has_delete_permission(self, request, obj=None):
+        if obj and obj.status in (models.Payment.Status.PAID, models.Payment.Status.PROCESSING):
+            return False
+        else:
+            return super().has_delete_permission(request, obj)
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False

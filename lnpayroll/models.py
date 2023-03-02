@@ -1,3 +1,4 @@
+from django.contrib.admin import display
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -80,7 +81,7 @@ class Payment(models.Model):
         FAILED = "failed"
 
     payroll = models.ForeignKey(
-        "Payroll", on_delete=models.PROTECT, related_name="payroll_payments"
+        "Payroll", on_delete=models.CASCADE, related_name="payroll_payments"
     )
     employee = models.ForeignKey(
         "Employee", on_delete=models.PROTECT, related_name="employee_payments"
