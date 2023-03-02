@@ -158,8 +158,9 @@ class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
         "employee",
         "fiat_amount",
         "fx_rate",
-        "msats_payed",
-        "msats_fees",
+        "btc_payed",
+        "fee_sats",
+        "fee_ppm",
         "payed",
         "pay_button",
     ]

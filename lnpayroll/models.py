@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from .validators import validate_lnurl, validate_ln_address
 import lnpayroll as lnp
 from datetime import date
+from decimal import Decimal
 
 
 class Employee(models.Model):
@@ -104,3 +105,19 @@ class Payment(models.Model):
 
     def __str__(self):
         return f"Payment ({self.fiat_amount} -> {self.employee})"
+
+    @display(description="₿ Payed", ordering="msats_payed")
+    def btc_payed(self):
+        if self.msats_payed:
+            return self.msats_payed * 0.00000000001
+
+    @display(description="Fee (SAT)", ordering="msats_fees")
+    def fee_sats(self):
+        if self.msats_fees:
+            return self.msats_fees / 1000
+
+    @display(description="Fee (PPM)", ordering="msats_fees")
+    def fee_ppm(self):
+        if self.msats_payed and self.msats_fees:
+            return round((self.msats_fees / self.msats_payed) * 1000000)
+        return 0
