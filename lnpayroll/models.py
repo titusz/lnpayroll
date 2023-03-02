@@ -1,4 +1,3 @@
-from constance import config
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -42,6 +41,10 @@ class Employee(models.Model):
     def clean(self):
         if not self.lnurlp and not self.ln_address:
             raise ValidationError(_("Either an LNURLp or a Lightning Address is required"))
+        if self.lnurlp and self.ln_address:
+            raise ValidationError(
+                _("Cannot use Lightning Address and LNURLp at the same time. Choose one!")
+            )
 
     @property
     def lnurl_raw(self):
