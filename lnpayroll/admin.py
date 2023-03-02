@@ -197,7 +197,7 @@ class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
         log.debug(f"Triggered payment {obj}")
         msg = lightning.pay(obj.pk)
         self.message_user(request, msg.msg, level=msg.lvl)
-        return HttpResponseRedirect("/lnpayroll/payment/")
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
     def pay_button(self, obj):
         link = f"/lnpayroll/payment/{obj.id}/actions/pay/"
