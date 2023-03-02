@@ -123,7 +123,8 @@ class PayrollAdmin(admin.ModelAdmin):
 class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
     list_display = [
         "status_label",
-        "payroll",
+        "get_payroll_date",
+        "get_payroll_title",
         "employee",
         "fiat_amount",
         "fx_rate",
@@ -132,7 +133,7 @@ class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
         "payed",
         "pay_button",
     ]
-    list_filter = ["status"]
+    list_filter = ["status", "payroll__title"]
     change_actions = ["pay"]
     readonly_fields = ("fx_rate",)
     date_hierarchy = "payroll__date"
@@ -143,6 +144,14 @@ class PaymentAdmin(DjangoObjectActions, admin.ModelAdmin):
         "paid": "green",
         "failed": "crimson",
     }
+
+    @admin.display(description="Payroll Date", ordering="payroll__date")
+    def get_payroll_date(self, obj):
+        return obj.payroll.date
+
+    @admin.display(description="Payroll Title", ordering="payroll__title")
+    def get_payroll_title(self, obj):
+        return obj.payroll.title
 
     def status_label(self, obj):
         color = self.colors[obj.status]

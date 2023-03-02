@@ -55,7 +55,7 @@ class Payroll(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.date.year}-{self.date.month:0>2}"
+        return f"{self.date.year}-{self.date.month:0>2}-{self.date.day} - {self.title}"
 
     def save(self, *args, **kwargs):
         super(Payroll, self).save(*args, **kwargs)
