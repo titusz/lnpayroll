@@ -120,6 +120,13 @@ def pay(pk):
             if idx == 0:
                 p_obj.payment_hash = resp["result"]["payment_hash"]
                 p_obj.save()
+            if resp["result"]["status"] == "FAILED":
+                p_obj.status = Payment.Status.FAILED
+                p_obj.save()
+                return Message(
+                    messages.ERROR, f"Payment failed: {resp['result']['failure_reason']}"
+                )
+
         result = resp["result"]
         if result["status"] == "SUCCEEDED":
             p_obj.msats_fees = result["fee_msat"]
