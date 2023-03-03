@@ -7,16 +7,12 @@ import shutil
 import sys
 import os
 from loguru import logger as log
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lnpayroll.settings")
 from django.contrib.auth import get_user_model
 from django.core import management
 import django
 import pathlib
 
-
 HERE = pathlib.Path(__file__).parent.absolute()
-django.setup()
 
 
 def delete_dev_db():
@@ -32,6 +28,14 @@ def delete_dev_db():
         except Exception as e:
             log.error(f"{e}\nFailed deleting dev database\nRetry after stopping dev server!")
             sys.exit(0)
+
+
+# DB deletion must happen before connecting
+delete_dev_db()
+
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lnpayroll.settings")
+django.setup()
 
 
 def reset_migrations():
@@ -84,13 +88,8 @@ def create_user():
         log.info("Skipped creating initial user - already exists")
 
 
-def config():
-    delete_dev_db()
+if __name__ == "__main__":
     reset_migrations()
     migrate()
     load_fixtures()
     create_user()
-
-
-if __name__ == "__main__":
-    config()
