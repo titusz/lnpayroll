@@ -28,6 +28,7 @@ SECRET_KEY = "django-insecure-uf47t)@e40x&-0*ro-@ti3$t75nb+6s8*(uk1sjtsuh0!ksmec
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+
 ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ["https://*.ngrok.io"]
 
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -127,7 +129,7 @@ CACHES = {
     "default": {
         "BACKEND": "shared_memory_dict.caches.django.SharedMemoryCache",
         "LOCATION": "memory",
-        "OPTIONS": {"MEMORY_BLOCK_SIZE": 1024},
+        "OPTIONS": {"MEMORY_BLOCK_SIZE": 4096},
     }
 }
 
@@ -135,6 +137,7 @@ CACHES = {
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "static"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

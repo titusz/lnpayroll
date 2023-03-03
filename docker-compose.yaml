@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  app:
+    init: true
+    volumes:
+      - .:/app
+    build:
+      context: .
+      target: dev-runtime
+    environment:
+      AUTO_MIGRATE_AND_INSTALL: "true"
+    ports:
+        - "8765:8765"
