@@ -10,6 +10,7 @@ from constance import config
 from django.conf import settings
 import bolt11
 from datetime import datetime
+from urllib.parse import quote
 
 
 _lnd = None
@@ -76,12 +77,30 @@ def pay(pk):
         p_obj.save()
         return Message(messages.ERROR, f"Failed to acquire payRequest: {e}")
 
-    # Get Invoice
+    # Check LUD 12 - Comments in payRequest support
+    comment_chars = resp.get("commentAllowed", 0)
+
+    # Build Callback URL
     sep = "&" if "?" in callback else "?"
     url = callback + sep + f"amount={msats}"
+    if comment_chars:
+        comment = f"{p_obj.fiat_amount} {config.BASE_CURRENCY}"
+        if p_obj.payroll.title:
+            comment += f" - {p_obj.payroll.title}"
+        comment = comment[:comment_chars]
+        comment = quote(comment.encode("utf8"))
+        url += f"&comment={comment}"
+
+    log.debug(f"Constructed callback URL: {url}")
+
+    # Get Invoice
     try:
         resp = requests.get(url, headers=headers).json()
         log.debug(f"Callback Response: {resp}")
+        if resp.get("status") == "ERROR":
+            p_obj.status = Payment.Status.FAILED
+            p_obj.save()
+            return Message(messages.ERROR, f"LNURL callback error: {resp.get('reason') }")
         invoice = resp["pr"]
     except Exception as e:
         p_obj.status = Payment.Status.FAILED
