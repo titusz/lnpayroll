@@ -1,0 +1,30 @@
+manifestVersion: 1
+id: lnpayroll-lnpayroll
+name: LnPayroll
+tagline: Eployee Payroll at Lightning Speed
+icon: https://svgur.com/i/mvA.svg
+category: Finance
+version: "0.1.0"
+port: 8765
+description: >-
+  LnPayroll is an application to pay wages using your LND Lightning node.
+  Create a list of Employees and their wages in fiat currency. Add their LNURLp or Lightning
+  Addresses and create payment runs. All payments, including exchange rates can be exported as CSV
+  or Excel for import to you bookkeeping system.
+developer: titusz
+website: https://github.com/titusz/lnpayroll
+submitter: LnPayroll
+submission: https://github.com/titusz/lnpayroll
+repo: https://github.com/titusz/lnpayroll
+support: https://github.com/titusz/lnpayroll/issues
+gallery:
+  - https://i.imgur.com/yyVG0Jb.jpeg
+  - https://i.imgur.com/yyVG0Jb.jpeg
+  - https://i.imgur.com/yyVG0Jb.jpeg
+releaseNotes: >-
+  Unreleased
+dependencies:
+  - lightning
+path: ""
+defaultUsername: ""
+defaultPassword: ""
