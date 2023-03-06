@@ -7,7 +7,7 @@ services:
       APP_PORT: "8765"
 
   server:
-    image: ghcr.io/titusz/lnpayroll:latest
+    image: ghcr.io/titusz/lnpayroll:v0.1.1
     init: true
     restart: on-failure
     stop_grace_period: 1m

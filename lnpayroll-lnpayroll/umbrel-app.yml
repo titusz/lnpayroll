@@ -11,7 +11,7 @@ description: >-
   Create a list of Employees and their wages in fiat currency. Add their LNURLp or Lightning
   Addresses and create payment runs. All payments, including exchange rates can be exported as CSV
   or Excel for import to you bookkeeping system.
-developer: titusz
+developer: LnPayroll
 website: https://github.com/titusz/lnpayroll
 submitter: LnPayroll
 submission: https://github.com/titusz/lnpayroll
