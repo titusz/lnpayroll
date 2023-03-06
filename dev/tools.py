@@ -21,7 +21,7 @@ HERE = pathlib.Path(__file__).parent.absolute()
 
 
 def delete_dev_db():
-    dev_db = HERE / "dev.db"
+    dev_db = HERE.parent / "data/lnpayroll.sqlite"
     if dev_db.exists():
         do_delete = input(f"Delete dev database at {dev_db} (y/n)?: ")
         if do_delete != "y":

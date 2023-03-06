@@ -20,11 +20,11 @@ def lnd():
     global _lnd
     if _lnd is None:
         _lnd = requests.Session()
-        with open(settings.LND_MACAROON_PATH, "rb") as infile:
+        with open(settings.LND_MACAROON, "rb") as infile:
             macaroon = infile.read().hex()
         headers = {"Grpc-Metadata-macaroon": macaroon}
         _lnd.headers.update(headers)
-        _lnd.verify = settings.LND_CERT_PATH.as_posix()
+        _lnd.verify = settings.LND_CERT
     return _lnd
 
 
@@ -122,7 +122,7 @@ def pay(pk):
         return Message(messages.ERROR, f"Invalid BOLT11 invoice: {e}")
 
     # Pay Invoice´
-    endpoint = f"{settings.LND_REST_SERVER}/v2/router/send"
+    endpoint = f"{settings.LND_REST_URL}/v2/router/send"
 
     max_fee = lnp.max_fee(msats)
     payload = {

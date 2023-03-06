@@ -9,16 +9,19 @@ from django.conf.locale.en import formats as en_formats
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
 
+APP_DATA_DIR = env("APP_DATA_DIR")
+LND_CERT = env("LND_CERT", default="/lnd/tls.cert")
+LND_MACAROON = env("LND_MACAROON", default="/lnd/data/chain/bitcoin/mainnet/admin.macaroon")
+LND_REST_URL = env("LND_REST_URL", default="https://10.21.21.9:8080")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY", default="insecure-development-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", default=True)
+DEBUG = env("DEBUG", default=False)
 
 
 ALLOWED_HOSTS = ["*"]
@@ -78,7 +81,7 @@ WSGI_APPLICATION = "lnpayroll.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {"default": env.db(default=f"sqlite:////{BASE_DIR}/dev/dev.db")}
+DATABASES = {"default": env.db(default=f"sqlite:////{APP_DATA_DIR}/lnpayroll.sqlite")}
 
 
 # Password validation
@@ -120,14 +123,10 @@ CACHES = {
     }
 }
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = f"{APP_DATA_DIR}/static"
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
@@ -159,8 +158,3 @@ CONSTANCE_CONFIG = OrderedDict(
         ("TX_TIMEOUT", (30, "Number of seconds for transaction timeout", int)),
     ]
 )
-
-# LND
-LND_MACAROON_PATH = BASE_DIR / "dev/lnd.mac"
-LND_CERT_PATH = BASE_DIR / "dev/lnd.cert"
-LND_REST_SERVER = "https://umbrel.local:8080"
