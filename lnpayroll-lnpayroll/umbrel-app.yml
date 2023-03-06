@@ -26,5 +26,5 @@ releaseNotes: >-
 dependencies:
   - lightning
 path: ""
-defaultUsername: ""
-defaultPassword: ""
+defaultUsername: admin
+deterministicPassword: true

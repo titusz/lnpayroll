@@ -11,11 +11,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env(BASE_DIR / ".env")
 
-APP_DATA_DIR = env("APP_DATA_DIR")
 LND_CERT = env("LND_CERT", default="/lnd/tls.cert")
 LND_MACAROON = env("LND_MACAROON", default="/lnd/data/chain/bitcoin/mainnet/admin.macaroon")
-LND_REST_URL = env("LND_REST_URL", default="https://10.21.21.9:8080")
-
+LND_REST_URL = env("LND_REST_URL", default="https://umbrel.local:8080")
+LNPAYROLL_DATA_DIR = env("LNPAYROL_DATA_DIR", default=BASE_DIR / "data")
+LNPAYROLL_DB_URI = env("LNPAYROLL_DB_URI", default=f"sqlite:////{BASE_DIR}/data/lnpayroll.sqlite")
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY", default="insecure-development-key")
@@ -81,7 +81,7 @@ WSGI_APPLICATION = "lnpayroll.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {"default": env.db(default=f"sqlite:////{APP_DATA_DIR}/lnpayroll.sqlite")}
+DATABASES = {"default": env.db(default=LNPAYROLL_DB_URI)}
 
 
 # Password validation
@@ -125,7 +125,7 @@ CACHES = {
 
 
 STATIC_URL = "static/"
-STATIC_ROOT = f"{APP_DATA_DIR}/static"
+STATIC_ROOT = BASE_DIR / "static"
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -66,17 +66,9 @@ def collect_static():
 
 
 def create_user():
-    from django.conf import settings
-    import secrets
-
     log.info("Create initial user")
-    if settings.DEBUG:
-        username = "demo"
-        password = "demo"
-    else:
-        username = "admin"
-        password = secrets.token_hex(32)
-
+    username = "admin"
+    password = os.environ.get("APP_PASSWORD", "lnpayroll")
     User = get_user_model()
 
     if not User.objects.filter(username=username).exists():
