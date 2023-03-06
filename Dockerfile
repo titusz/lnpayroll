@@ -36,9 +36,9 @@ RUN poetry install
 COPY dev/entrypoint.sh /app/dev/
 ENTRYPOINT [ "dev/entrypoint.sh" ]
 
-EXPOSE 8765/tcp
+EXPOSE 3017
 
-CMD ["poetry", "run", "gunicorn", "lnpayroll.wsgi", "--bind=0.0.0.0:8765"]
+CMD ["poetry", "run", "gunicorn", "lnpayroll.wsgi", "--bind=0.0.0.0:8088"]
 
 #
 # prod-runtime
@@ -51,6 +51,6 @@ RUN poetry install --no-dev --remove-untracked
 COPY . /app/
 ENTRYPOINT [ "dev/entrypoint.sh" ]
 
-EXPOSE 8765/tcp
+EXPOSE 8088
 
-CMD ["poetry", "run", "gunicorn", "lnpayroll.wsgi", "--bind=0.0.0.0:8765", "--workers=1"]
+CMD ["poetry", "run", "gunicorn", "lnpayroll.wsgi", "--bind=0.0.0.0:8088", "--workers=1"]

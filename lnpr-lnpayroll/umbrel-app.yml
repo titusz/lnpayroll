@@ -4,8 +4,8 @@ name: LnPayroll
 tagline: Employee Payroll at Lightning Speed
 icon: https://svgur.com/i/mvA.svg
 category: Finance
-version: "0.1.1"
-port: 8765
+version: "0.1.2"
+port: 3017
 description: >-
   LnPayroll is an application to pay wages using your LND Lightning node.
   Create a list of Employees and their wages in fiat currency. Add their LNURLp or Lightning

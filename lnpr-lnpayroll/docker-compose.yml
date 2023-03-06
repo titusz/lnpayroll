@@ -4,10 +4,11 @@ services:
   app_proxy:
     environment:
       APP_HOST: lnpr-lnpayroll_server_1
-      APP_PORT: "8765"
+      APP_PORT: 8088
+      PROXY_AUTH_ADD: "false"
 
   server:
-    image: ghcr.io/titusz/lnpayroll:v0.1.1
+    image: ghcr.io/titusz/lnpayroll:v0.1.2
     init: true
     restart: on-failure
     stop_grace_period: 1m
@@ -20,5 +21,4 @@ services:
       LNPAYROLL_DATA_DIR: "/data"
       LNPAYROLL_DB_URI: sqlite:////data/lnpayroll.sqlite
       LND_REST_URL: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT/
-    ports:
-      - "8765:8765"
+
