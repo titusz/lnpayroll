@@ -5,7 +5,6 @@ services:
     environment:
       APP_HOST: lnpayroll-lnpayroll_server_1
       APP_PORT: "8765"
-      PROXY_AUTH_ADD: "false"
 
   server:
     image: ghcr.io/titusz/lnpayroll:latest
@@ -16,8 +15,10 @@ services:
       - ${APP_DATA_DIR}:/data
       - ${APP_LIGHTNING_NODE_DATA_DIR}:/lnd:ro
     environment:
-      DEBUG: False
+      AUTO_MIGRATE_AND_INSTALL: "true"
+      SECRED_KEY: $APP_SEED
       LNPAYROLL_DATA_DIR: "/data"
       LNPAYROLL_DB_URI: sqlite:////data/lnpayroll.sqlite
       LND_REST_URL: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT/
-
+    ports:
+      - "8765:8765"

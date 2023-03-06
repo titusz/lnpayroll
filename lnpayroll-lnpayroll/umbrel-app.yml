@@ -1,10 +1,10 @@
 manifestVersion: 1
 id: lnpayroll-lnpayroll
 name: LnPayroll
-tagline: Eployee Payroll at Lightning Speed
+tagline: Employee Payroll at Lightning Speed
 icon: https://svgur.com/i/mvA.svg
 category: Finance
-version: "0.1.0"
+version: "0.1.1"
 port: 8765
 description: >-
   LnPayroll is an application to pay wages using your LND Lightning node.
@@ -22,7 +22,7 @@ gallery:
   - https://i.imgur.com/yyVG0Jb.jpeg
   - https://i.imgur.com/yyVG0Jb.jpeg
 releaseNotes: >-
-  Unreleased
+  Unreleased v0.1.1
 dependencies:
   - lightning
 path: ""

@@ -53,4 +53,4 @@ ENTRYPOINT [ "dev/entrypoint.sh" ]
 
 EXPOSE 8765/tcp
 
-CMD ["poetry", "run", "gunicorn", "lnpayroll.wsgi", "--bind=0.0.0.0:8765"]
+CMD ["poetry", "run", "gunicorn", "lnpayroll.wsgi", "--bind=0.0.0.0:8765", "--workers=1"]
