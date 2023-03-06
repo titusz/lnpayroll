@@ -10,5 +10,3 @@ services:
       target: dev-runtime
     environment:
       AUTO_MIGRATE_AND_INSTALL: "true"
-    ports:
-        - "8765:8765"
