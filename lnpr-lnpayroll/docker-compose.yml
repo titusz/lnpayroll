@@ -3,7 +3,7 @@ version: "3.7"
 services:
   app_proxy:
     environment:
-      APP_HOST: lnpayroll-lnpayroll_server_1
+      APP_HOST: lnpr-lnpayroll_server_1
       APP_PORT: "8765"
 
   server:
