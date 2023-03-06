@@ -156,5 +156,7 @@ CONSTANCE_CONFIG = OrderedDict(
         ("MAX_FEE_PPM", (500, "Maximum transaction fee in PPM", int)),
         ("FX_TIMEOUT", (60, "Number of seconds before updating exchange rate", int)),
         ("TX_TIMEOUT", (30, "Number of seconds for transaction timeout", int)),
+        ("EXPORT_EXCHANGE_VALUE", ("LND", "Value for `Exchange` export field", str)),
+        ("EXPORT_TRADE_GROUP_VALUE", ("", "Value for `Trade-Group` export field", str)),
     ]
 )

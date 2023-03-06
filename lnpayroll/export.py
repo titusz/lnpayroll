@@ -4,9 +4,16 @@ from import_export import resources
 from import_export.fields import Field
 from lnpayroll.models import Payment
 from decimal import Decimal, ROUND_HALF_UP
+from constance import config
 
 
-class PaymentResource(resources.ModelResource):
+class RawData(resources.ModelResource):
+    class Meta:
+        model = Payment
+        name = "Raw Data"
+
+
+class CoinTracking(resources.ModelResource):
     type = Field(column_name="Type")
     buy_amount = Field(attribute="fiat_amount", column_name="Buy Amount")
     buy_currency = Field(attribute="fiat_currency", column_name="Buy Currency")
@@ -19,9 +26,14 @@ class PaymentResource(resources.ModelResource):
     comment = Field(column_name="Comment")
     date = Field(column_name="Date")
     tx_id = Field(attribute="payment_hash", column_name="Tx-ID")
+    buy_value = Field(column_name="Buy Value")
+    sell_value = Field(column_name="Sell Value")
+    liquidity_pool = Field(column_name="Liquidity Pool")
+    employee_number = Field(column_name="Employee Number")
 
     class Meta:
         model = Payment
+        name = "Cointracking Format"
         fields = (
             "type",
             "buy_amount",
@@ -35,12 +47,16 @@ class PaymentResource(resources.ModelResource):
             "comment",
             "date",
             "tx_id",
+            "buy_value",
+            "sell_value",
+            "liquidity_pool",
+            "employee_number",
         )
         export_order = fields
 
     def dehydrate_type(self, payment):
         """Cointracking Transaction Type"""
-        return "Spend"
+        return "Trade"
 
     def dehydrate_sell_currency(self, payment):
         """We only spend Bitcoin :)"""
@@ -48,6 +64,8 @@ class PaymentResource(resources.ModelResource):
 
     def dehydrate_fee(self, payment):
         """Millisatoshis to BTC conversion"""
+        if not payment.msats_fees:
+            return Decimal("0")
         btc_fees = Decimal(payment.msats_fees) / Decimal(100000000000)
         fees_rounded = btc_fees.quantize(Decimal(".00000001"), rounding=ROUND_HALF_UP)
         return fees_rounded
@@ -58,11 +76,11 @@ class PaymentResource(resources.ModelResource):
 
     def dehydrate_exchange(self, payment):
         """Spending is a direct exchange"""
-        return "Direct"
+        return config.EXPORT_EXCHANGE_VALUE
 
     def dehydrate_trade_group(self, payment):
         """The trade groupe is a payroll"""
-        return "Payroll"
+        return config.EXPORT_TRADE_GROUP_VALUE
 
     def dehydrate_comment(self, payment):
         """Comment is the employee code + payroll title"""
@@ -72,4 +90,18 @@ class PaymentResource(resources.ModelResource):
         return comment
 
     def dehydrate_date(self, payment):
-        return payment.payed.strftime("%Y-%d-%m %H:%M:%S")
+        if payment.payed:
+            return payment.payed.isoformat(timespec="seconds")
+        return ""
+
+    def dehydrate_buy_value(self, paymennt):
+        return ""
+
+    def dehydrate_sell_value(self, paymennt):
+        return ""
+
+    def dehydrate_liquidity_pool(self, paymennt):
+        return ""
+
+    def dehydrate_employee_number(self, payment):
+        return payment.employee.code

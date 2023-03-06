@@ -8,7 +8,7 @@ from lnpayroll import models
 from lnpayroll import lightning
 from constance import config
 from import_export.admin import ExportMixin
-from lnpayroll.export import PaymentResource
+from lnpayroll.export import CoinTracking, RawData
 
 
 @admin.register(models.Employee)
@@ -133,7 +133,7 @@ class PayrollAdmin(admin.ModelAdmin):
 
 @admin.register(models.Payment)
 class PaymentAdmin(DjangoObjectActions, ExportMixin, admin.ModelAdmin):
-    resource_classes = [PaymentResource]
+    resource_classes = [CoinTracking, RawData]
     fields = (
         "payroll",
         "employee",
