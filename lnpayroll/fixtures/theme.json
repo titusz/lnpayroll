@@ -14,7 +14,7 @@
             "logo_max_height": 100,
             "logo_visible": true,
             "favicon": "/static/lnpayroll/lnpayroll-icon.svg",
-            "env_name": "Development",
+            "env_name": "Umbrel",
             "env_color": "#D767FF",
             "env_visible_in_header": true,
             "env_visible_in_favicon": true,

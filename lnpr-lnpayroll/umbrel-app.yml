@@ -2,7 +2,7 @@ manifestVersion: 1
 id: lnpr-lnpayroll
 name: LnPayroll
 tagline: Employee Payroll at Lightning Speed
-icon: https://svgur.com/i/mvA.svg
+icon: https://raw.githubusercontent.com/titusz/lnpayroll/main/dev/lnpayroll-icon.svg
 category: Finance
 version: "0.1.2"
 port: 3017
@@ -18,11 +18,11 @@ submission: https://github.com/titusz/lnpayroll
 repo: https://github.com/titusz/lnpayroll
 support: https://github.com/titusz/lnpayroll/issues
 gallery:
-  - https://i.imgur.com/yyVG0Jb.jpeg
-  - https://i.imgur.com/yyVG0Jb.jpeg
-  - https://i.imgur.com/yyVG0Jb.jpeg
+  - https://raw.githubusercontent.com/titusz/lnpayroll/main/dev/screen-employee.png
+  - https://raw.githubusercontent.com/titusz/lnpayroll/main/dev/screen-payments.png
+  - https://raw.githubusercontent.com/titusz/lnpayroll/main/dev/screen-payroll.png
 releaseNotes: >-
-  Unreleased v0.1.1
+  Unreleased v0.1.2
 dependencies:
   - lightning
 path: ""
