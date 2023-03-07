@@ -18,6 +18,7 @@ services:
     environment:
       AUTO_MIGRATE_AND_INSTALL: "true"
       SECRED_KEY: $APP_SEED
+      APP_PASSWORD: $APP_PASSWORD
       LNPAYROLL_DATA_DIR: "/data"
       LNPAYROLL_DB_URI: sqlite:////data/lnpayroll.sqlite
       LND_REST_URL: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT
