@@ -21,7 +21,7 @@ LNPAYROLL_DB_URI = env("LNPAYROLL_DB_URI", default=f"sqlite:////{BASE_DIR}/data/
 SECRET_KEY = env("SECRET_KEY", default="insecure-development-key")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG", default=False)
+DEBUG = env("DEBUG", default=True)
 
 
 ALLOWED_HOSTS = ["*"]
