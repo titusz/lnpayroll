@@ -4,7 +4,7 @@ name: LnPayroll
 tagline: Employee Payroll at Lightning Speed
 icon: https://raw.githubusercontent.com/titusz/lnpayroll/main/dev/lnpayroll-icon.svg
 category: Finance
-version: "0.1.2"
+version: "0.1.3"
 port: 3017
 description: >-
   LnPayroll is an application to pay wages using your LND Lightning node.
@@ -22,7 +22,7 @@ gallery:
   - https://raw.githubusercontent.com/titusz/lnpayroll/main/dev/screen-payments.png
   - https://raw.githubusercontent.com/titusz/lnpayroll/main/dev/screen-payroll.png
 releaseNotes: >-
-  Unreleased v0.1.2
+  Unreleased v0.1.3
 dependencies:
   - lightning
 path: ""
