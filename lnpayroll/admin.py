@@ -7,12 +7,13 @@ from django_object_actions import DjangoObjectActions, action
 from lnpayroll import models
 from lnpayroll import lightning
 from constance import config
-from import_export.admin import ExportMixin
-from lnpayroll.export import CoinTracking, RawData
+from import_export.admin import ExportMixin, ImportExportModelAdmin
+from lnpayroll.export import CoinTracking, RawData, EmployeeResource
 
 
 @admin.register(models.Employee)
-class EmployeeAdmin(admin.ModelAdmin):
+class EmployeeAdmin(ImportExportModelAdmin):
+    resource_classes = [EmployeeResource]
     actions = None
     list_display = [
         "code",

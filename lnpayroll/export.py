@@ -2,9 +2,14 @@
 """Export Resources"""
 from import_export import resources
 from import_export.fields import Field
-from lnpayroll.models import Payment
+from lnpayroll.models import Payment, Employee
 from decimal import Decimal, ROUND_HALF_UP
 from constance import config
+
+
+class EmployeeResource(resources.ModelResource):
+    class Meta:
+        model = Employee
 
 
 class RawData(resources.ModelResource):
