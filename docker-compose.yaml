@@ -10,3 +10,5 @@ services:
       target: dev-runtime
     environment:
       AUTO_MIGRATE_AND_INSTALL: "true"
+    ports:
+        - 8088:8088
