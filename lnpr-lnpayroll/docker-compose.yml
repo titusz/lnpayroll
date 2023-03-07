@@ -20,5 +20,5 @@ services:
       SECRED_KEY: $APP_SEED
       LNPAYROLL_DATA_DIR: "/data"
       LNPAYROLL_DB_URI: sqlite:////data/lnpayroll.sqlite
-      LND_REST_URL: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT/
+      LND_REST_URL: https://$APP_LIGHTNING_NODE_IP:$APP_LIGHTNING_NODE_REST_PORT
 
