@@ -9,7 +9,6 @@ if __name__ == "__main__":
     delete_dev_db()
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "lnpayroll.settings")
     django.setup()
-    reset_migrations()
     migrate()
     load_fixtures()
     collect_static()
