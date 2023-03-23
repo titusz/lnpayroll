@@ -112,6 +112,15 @@ class Payment(models.Model):
     def fiat_currency(self):
         return config.BASE_CURRENCY
 
+    @property
+    def msats_total(self) -> int:
+        total = 0
+        if self.msats_payed is not None:
+            total += self.msats_payed
+        if self.msats_fees is not None:
+            total += self.msats_fees
+        return total
+
     @display(description="₿ Payed", ordering="msats_payed")
     def btc_payed(self):
         if self.msats_payed:

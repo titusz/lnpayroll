@@ -22,7 +22,7 @@ class CoinTracking(resources.ModelResource):
     type = Field(column_name="Type")
     buy_amount = Field(attribute="fiat_amount", column_name="Buy Amount")
     buy_currency = Field(attribute="fiat_currency", column_name="Buy Currency")
-    sell_amount = Field(attribute="btc_payed", column_name="Sell Amount")
+    sell_amount = Field(column_name="Sell Amount")
     sell_currency = Field(column_name="Sell Currency")
     fee = Field(column_name="Fee")
     fee_currency = Field(column_name="Fee Currency")
@@ -62,6 +62,14 @@ class CoinTracking(resources.ModelResource):
     def dehydrate_type(self, payment):
         """Cointracking Transaction Type"""
         return "Trade"
+
+    def dehydrate_sell_amount(self, payment):
+        """Sell amount including fees"""
+        if not payment.msats_total:
+            return Decimal("0")
+        sats = Decimal(payment.msats_total) / Decimal(100000000000)
+        rounded = sats.quantize(Decimal(".00000001"), rounding=ROUND_HALF_UP)
+        return rounded
 
     def dehydrate_sell_currency(self, payment):
         """We only spend Bitcoin :)"""
