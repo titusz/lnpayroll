@@ -64,15 +64,17 @@ class Payroll(models.Model):
         return f"{self.date.year}-{self.date.month:0>2}-{self.date.day} - {self.title}"
 
     def save(self, *args, **kwargs):
+        """Autocreate payments for new Payroll"""
+        new = True if self.id is None else False
         super(Payroll, self).save(*args, **kwargs)
-
-        for employee in Employee.objects.filter(active=True):
-            Payment.objects.create(
-                payroll=self,
-                employee=employee,
-                fiat_amount=employee.payout_amount,
-                lnurl_raw=employee.lnurl_raw,
-            )
+        if new:
+            for employee in Employee.objects.filter(active=True):
+                Payment.objects.create(
+                    payroll=self,
+                    employee=employee,
+                    fiat_amount=employee.payout_amount,
+                    lnurl_raw=employee.lnurl_raw,
+                )
 
 
 class Payment(models.Model):
