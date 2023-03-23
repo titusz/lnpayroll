@@ -8,25 +8,25 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.9"
-django = "^4.1.7"
-loguru = "^0.6.0"
-lnurl = "^0.3.6"
-requests = "^2.28.2"
-django-constance = {extras = ["database"], version = "^2.9.1"}
-shared-memory-dict = "^0.7.2"
-django-object-actions = "^4.1.0"
-django-admin-interface = "^0.24.2"
-bolt11-voltage = "^0.0.1.4"
-django-import-export = "^3.1.0"
-whitenoise = "^6.4.0"
-gunicorn = "^20.1.0"
-django-environ = "^0.10.0"
+django = "^4.1"
+loguru = "^0.6"
+lnurl = "^0.3"
+requests = "^2.28"
+django-constance = {extras = ["database"], version = "^2.9"}
+shared-memory-dict = "^0.7"
+django-object-actions = "^4.1"
+django-admin-interface = "^0.24"
+bolt11-voltage = "^0.0.1"
+django-import-export = "^3.1"
+whitenoise = "^6.4"
+gunicorn = "^20.1"
+django-environ = "^0.10"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "*"
 black = "*"
 poethepoet = "*"
-pytest-django = "^4.5.2"
+pytest-django = "^4.5"
 
 [tool.black]
 line-length = 100
