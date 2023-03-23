@@ -93,7 +93,8 @@ class PayrollAdmin(admin.ModelAdmin):
 
     @admin.display(description=f"Total ({config.BASE_CURRENCY})")
     def total_fiat(self, obj):
-        return f"{obj.total_fiat:.2f}"
+        if obj.total_fiat:
+            return f"{obj.total_fiat:.2f}"
 
     def number(self, obj):
         return obj.number
