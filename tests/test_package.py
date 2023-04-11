@@ -3,4 +3,4 @@ import lnpayroll
 
 
 def test_version():
-    assert lnpayroll.__version__ == "0.1.4"
+    assert lnpayroll.__version__ == "0.1.5"

@@ -131,10 +131,6 @@ STATIC_ROOT = BASE_DIR / "static"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-# fixtures
-FIXTURE_DIRS = [BASE_DIR / "lnpayroll/fixtures"]
-
-
 # django-admin-interface
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
