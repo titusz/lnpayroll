@@ -8,7 +8,7 @@ services:
       PROXY_AUTH_ADD: "false"
 
   server:
-    image: ghcr.io/titusz/lnpayroll:v0.1.5
+    image: ghcr.io/titusz/lnpayroll:v0.1.6
     init: true
     restart: on-failure
     stop_grace_period: 1m

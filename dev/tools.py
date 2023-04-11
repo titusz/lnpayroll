@@ -57,7 +57,7 @@ def migrate():
 
 def load_fixtures():
     log.info("Load theme fixture")
-    management.call_command("loaddata", "--app", "admin_interface.Theme", "theme")
+    management.call_command("loaddata", "theme.json")
 
 
 def collect_static():
