@@ -154,7 +154,7 @@ class PaymentAdmin(DjangoObjectActions, ExportMixin, admin.ModelAdmin):
         "payed",
     )
 
-    readonly_fields = fields
+    readonly_fields = ["created"]
 
     list_display = [
         "status_label",
@@ -222,4 +222,4 @@ class PaymentAdmin(DjangoObjectActions, ExportMixin, admin.ModelAdmin):
         return False
 
     def has_change_permission(self, request, obj=None):
-        return False
+        return True
