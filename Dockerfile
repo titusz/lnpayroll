@@ -53,4 +53,4 @@ ENTRYPOINT [ "dev/entrypoint.sh" ]
 
 EXPOSE 8088
 
-CMD ["poetry", "run", "gunicorn", "lnpayroll.wsgi", "--bind=0.0.0.0:8088", "--workers=1"]
+CMD ["poetry", "run", "gunicorn", "lnpayroll.wsgi", "--bind=0.0.0.0:8088", "-w=1", "-t=300"]
