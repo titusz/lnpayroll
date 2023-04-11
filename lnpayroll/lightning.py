@@ -136,6 +136,7 @@ def pay(pk):
         for idx, payment_update in enumerate(stream.iter_lines()):
             resp = json.loads(payment_update)
             log.debug(resp)
+            log.debug(f"Payment Status: {resp['result']['status']}")
             if idx == 0:
                 p_obj.payment_hash = resp["result"]["payment_hash"]
                 p_obj.save()
