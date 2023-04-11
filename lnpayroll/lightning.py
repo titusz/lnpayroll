@@ -100,7 +100,7 @@ def pay(pk):
         if resp.get("status") == "ERROR":
             p_obj.status = Payment.Status.FAILED
             p_obj.save()
-            return Message(messages.ERROR, f"LNURL callback error: {resp.get('reason') }")
+            return Message(messages.ERROR, f"LNURL callback error: {resp.get('reason')}")
         invoice = resp["pr"]
     except Exception as e:
         p_obj.status = Payment.Status.FAILED
@@ -133,9 +133,11 @@ def pay(pk):
 
     try:
         stream = lnd().post(endpoint, data=json.dumps(payload), timeout=None, stream=True)
+
         for idx, payment_update in enumerate(stream.iter_lines()):
             resp = json.loads(payment_update)
             log.debug(resp)
+            log.debug(f"Payment Status: {resp['result']['status']}")
             if idx == 0:
                 p_obj.payment_hash = resp["result"]["payment_hash"]
                 p_obj.save()
@@ -145,16 +147,12 @@ def pay(pk):
                 return Message(
                     messages.ERROR, f"Payment failed: {resp['result']['failure_reason']}"
                 )
-
-        result = resp["result"]
-        if result["status"] == "SUCCEEDED":
-            p_obj.msats_fees = result["fee_msat"]
-            p_obj.payed = datetime.utcnow()
-            p_obj.status = Payment.Status.PAID
-            p_obj.save()
-            return Message(messages.SUCCESS, "Payment sent succesfully")
-        else:
-            return Message(messages.ERROR, f"Payment failed: {result['failure_reason']}")
+            elif resp["result"]["status"] == "SUCCEEDED":
+                p_obj.msats_fees = resp["result"]["fee_msat"]
+                p_obj.payed = datetime.utcnow()
+                p_obj.status = Payment.Status.PAID
+                p_obj.save()
+                return Message(messages.SUCCESS, "Payment sent successfully")
     except Exception as e:
         p_obj.status = Payment.Status.FAILED
         p_obj.save()

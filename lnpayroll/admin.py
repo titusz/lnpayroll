@@ -9,6 +9,7 @@ from lnpayroll import lightning
 from constance import config
 from import_export.admin import ExportMixin, ImportExportModelAdmin
 from lnpayroll.export import CoinTracking, RawData, EmployeeResource
+from decimal import Decimal
 
 
 @admin.register(models.Employee)
@@ -74,7 +75,16 @@ class PaymentInline(admin.TabularInline):
 
 @admin.register(models.Payroll)
 class PayrollAdmin(admin.ModelAdmin):
-    list_display = ["date", "title", "total_fiat", "number", "paid", "status_label"]
+    list_display = [
+        "date",
+        "title",
+        "total_fiat",
+        "total_btc",
+        "total_fees",
+        "number",
+        "paid",
+        "status_label",
+    ]
     inlines = [PaymentInline]
 
     def show_month(self, obj):
@@ -84,6 +94,8 @@ class PayrollAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         qs = qs.annotate(number=Count("payroll_payments"))
         qs = qs.annotate(total_fiat=Sum("payroll_payments__fiat_amount"))
+        qs = qs.annotate(msats_payed=Sum("payroll_payments__msats_payed"))
+        qs = qs.annotate(msats_fees=Sum("payroll_payments__msats_fees"))
         qs = qs.annotate(
             paid=Count(
                 "payroll_payments", filter=Q(payroll_payments__status=models.Payment.Status.PAID)
@@ -93,7 +105,20 @@ class PayrollAdmin(admin.ModelAdmin):
 
     @admin.display(description=f"Total ({config.BASE_CURRENCY})")
     def total_fiat(self, obj):
-        return f"{obj.total_fiat:.2f}"
+        if obj.total_fiat:
+            return f"{obj.total_fiat:.2f}"
+
+    @admin.display(description=f"Payed (BTC)")
+    def total_btc(self, obj):
+        if obj.msats_payed:
+            value = Decimal(obj.msats_payed * 0.00000000001).quantize(Decimal(".00000001"))
+            return f"{value:.8f}"
+
+    @admin.display(description=f"Fees (BTC)")
+    def total_fees(self, obj):
+        if obj.msats_fees:
+            value = Decimal(obj.msats_fees * 0.00000000001).quantize(Decimal(".00000001"))
+            return f"{value:.8f}"
 
     def number(self, obj):
         return obj.number
@@ -153,7 +178,7 @@ class PaymentAdmin(DjangoObjectActions, ExportMixin, admin.ModelAdmin):
         "payed",
     )
 
-    readonly_fields = fields
+    readonly_fields = ["created"]
 
     list_display = [
         "status_label",
@@ -221,4 +246,4 @@ class PaymentAdmin(DjangoObjectActions, ExportMixin, admin.ModelAdmin):
         return False
 
     def has_change_permission(self, request, obj=None):
-        return False
+        return True
